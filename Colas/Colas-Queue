@@ -23,7 +23,7 @@ namespace Colas_dinamicas
 			Queue Cola = new Queue(100);
 
 
-			// Menu de opciones
+			// Menu de opcion
 			Console.WriteLine("=-=-=-=-= Menú =-=-=-=-= \n" +
 						"¿Qué desea hacer? \n" +
 						"\t\n" +
