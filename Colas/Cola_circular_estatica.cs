@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 
 namespace testing
 {
@@ -6,11 +7,10 @@ namespace testing
 	{
 		static void Insertar(string[] Nombres, float[] Sueldo, int f, int i)
         {
-            string NomEm;
-            float Suel;
-            char Op;
+            string nombre_empleado;
+            float sueldo_empleado;
 
-            Console.WriteLine("--Cola Circular--");
+            Console.WriteLine("=-=-=-=-= Cola circular estática =-=-=-=-=");
             if (f == 100)
             {
                 f = 1;
@@ -28,14 +28,14 @@ namespace testing
 				}
 				else
 				{
-                    Console.Write("Ingrese el nombre del Empleado: ");
-                    NomEm = Console.ReadLine();
-                    Console.Write("Ingrese el sueldo del Empleado: ");
-                    Suel = float.Parse(Console.ReadLine());
+                    Console.WriteLine("Ingrese el nombre del empleado.");
+                    nombre_empleado = Console.ReadLine();
+                    Console.WriteLine("Ingrese el sueldo del empleado.");
+                    sueldo_empleado = float.Parse(Console.ReadLine());
                     f++;
 
-                    Nombres[f] = NomEm;
-                    Sueldo[f] = Suel;
+                    Nombres[f] = nombre_empleado;
+                    Sueldo[f] = sueldo_empleado;
                 }
 			}
 			else
@@ -46,24 +46,24 @@ namespace testing
 				else
 				{
                     f = f + 1;
-                    Console.Write("Ingrese el nombre del Empleado: ");
-                    NomEm = Console.ReadLine();
-                    Console.Write("Ingrese el sueldo del Empleado: ");
-                    Suel = float.Parse(Console.ReadLine());
+                    Console.WriteLine("Ingrese el nombre del empleado.");
+                    nombre_empleado = Console.ReadLine();
+                    Console.WriteLine("Ingrese el sueldo del empleado.");
+                    sueldo_empleado = float.Parse(Console.ReadLine());
                     f++;
 
-                    Nombres[f] = NomEm;
-                    Sueldo[f] = Suel;
+                    Nombres[f] = nombre_empleado;
+                    Sueldo[f] = sueldo_empleado;
                 }
 			}
             if (i == 0)
                 i = 1;
 
             
-            Console.Write("¿Desea seguir insertando elementos a la cola? Si[s/S] No[n/N]: ");
-            Op = Convert.ToChar(Console.ReadLine());
+                Console.Write("¿Desea seguir insertando elementos a la cola? [1] Si 2 [No]");
+            otro = int.Parse(Console.ReadLine());
             Console.Clear();
-            if ((Op == 's') || (Op == 'S'))
+            if (otro == 1)
                 Insertar(Nombres, Sueldo, f, i);
             else
                 Menu(Nombres, Sueldo, f, i);
@@ -71,15 +71,13 @@ namespace testing
 
         static void Eliminar(string[] Nombres, float[] Sueldo, int f, int i)
         {
-            char Op;
-
             if (i == 0) {
                 Console.WriteLine("Cola vacía.");
                 Console.ReadKey();
             }
             else
             {
-                float Suel = Sueldo[i];
+                float Suelo_temp = Sueldo[i];
                 Sueldo[i] = 0;
                 if (i == f)
                 {
@@ -98,17 +96,17 @@ namespace testing
 					}
                 }
             }
-            Console.Write("¿Desea seguair eliminando nombres de la cola? Si[s/S] No[n/N]: ");
-            Op = Convert.ToChar(Console.ReadLine());
+            Console.Write("¿Desea seguir insertando elementos a la cola? [1] Si 2 [No]");
+            otro = int.Parse(Console.ReadLine());
             Console.Clear();
-            if ((Op == 's') || (Op == 'S'))
+            if (otro == 1)
                 Eliminar(Nombres, Sueldo, f, i);
             else
                 Menu(Nombres, Sueldo, f, i);
         }
         static void Desplegar(string[] Nombres, float[] Sueldo, int f, int i)
         {
-            Console.WriteLine("--Cola Circular Estatica--");
+            Console.WriteLine("=-=-=-=-= Desplegando =-=-=-=-=");
             if (i == 0)
                 Console.WriteLine("Cola vacía.");
             else
@@ -127,6 +125,7 @@ namespace testing
                 }
                 
             }
+            Console.WriteLine("");
             Console.Write("Presiona cualquier tecla para regresar al menú.");
             Console.ReadKey();
             Console.Clear();
@@ -135,13 +134,14 @@ namespace testing
         static void Menu(string[] Nombres, float[] Sueldo, int f, int i)
         {
             char opc;
-
-            Console.WriteLine("---Menu de opciones---");
-            Console.WriteLine("[1] Insertar un Nombre en la cola.");
-            Console.WriteLine("[2] Eliminar un Nombre de la cola.");
-            Console.WriteLine("[3] Mostrar Nombres de la cola.");
-            Console.WriteLine("[4] Salir");
-            Console.Write("Ingrese una opcion: ");
+				Console.WriteLine("=-=-=-=-= Menú =-=-=-=-= \n" +
+							"¿Qué desea hacer? \n" +
+							"\t\n" +
+							"[1] Insertar un nombre en la cola\n" +
+							"[2] Eliminar un nombre de la cola\n" +
+							"[3] Mostrar los nombres de la cola\n");
+				Console.WriteLine("");
+				Console.WriteLine("[4] Salir");
             opc = Console.ReadKey().KeyChar;
             Console.Clear();
 
@@ -157,13 +157,15 @@ namespace testing
                     Desplegar(Nombres, Sueldo, f, i);
                     break;
                 case '4':
-                    Console.WriteLine("-Cola simple para materias-\n");
+                    Console.WriteLine("=-=-=-=-= Cola circular estática =-=-=-=-=\n");
+                    Console.WriteLine("");
                     Console.Write("Presiona cualquier tecla para finalizar.");
                     Console.ReadKey();
                     Console.Clear();
                     break;
                 default:
-                    Console.WriteLine("-Cola simple para materias-\n");
+                    Console.WriteLine("=-=-=-=-= Cola circular estática =-=-=-=-=\n");
+                    Console.WriteLine("");
                     Console.Write("Selecciona una opción dentro del menú proporcionado.");
                     Console.ReadKey();
                     Console.Clear();
@@ -172,9 +174,10 @@ namespace testing
             }
         }
 
+        public static int otro;
         static void Main(string[] args)
 		{
-            Console.Title = "Colas Circular Estatica";
+            Console.Title = "Cola circular estática";
 
             int Tamaño = 100;
             string[] Nombres = new string[Tamaño];
