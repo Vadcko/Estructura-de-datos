@@ -1,0 +1,180 @@
+using System;
+
+
+namespace Practica1
+{
+    class Program
+    {
+        static string Opcion = "0", eleccion = "1";  
+        static int Sueldo = 0, EliminaSueldo = 0, Aux = 0;
+        private static readonly int Max = 10;
+        private static int Tamaño = 0;
+
+        static Nodo I, F, T, S, A; 
+        class Nodo 
+        {
+            public int dato;
+            public Nodo dirder, dirizq;
+        }
+        public static void Insertar() 
+        {
+            if (Tamaño == Max) 
+            {
+                Console.WriteLine("Lista enlazada llena");
+                Tamaño--;
+                Console.ReadKey();
+            }
+            else if (I == null) 
+            {
+                I = new Nodo { dato = Sueldo };
+                F = I; 
+                F.dirder = null; 
+                I.dirizq = null;
+            }
+            else 
+            {
+                T = new Nodo { dato = Sueldo, dirizq = F };
+                F.dirder = T; 
+                F = T; 
+                F.dirder = null; 
+            }
+            Tamaño++; 
+        }
+        public static void Eliminar() 
+        {
+            if (I == null) Console.WriteLine("Lista enlazada vacia");
+            else if (I == F) 
+            {
+                if (EliminaSueldo == I.dato)  
+                {
+                    Aux = I.dato; 
+                    I = null; 
+                    F = null;
+                    Console.WriteLine("Eliminado: {0}", Aux); 
+                    Tamaño--; 
+                    Console.ReadKey();
+                }
+                else 
+                {
+                    Console.WriteLine("No existe el sueldo seleccionado");
+                    Console.ReadKey();
+                }
+            }
+            else if (EliminaSueldo == I.dato) 
+            {
+                Aux = I.dato; 
+                T = I; 
+                I = I.dirder; 
+                I.dirizq = null; 
+                Tamaño--; 
+                Console.WriteLine("Eliminado: {0}\n\r", Aux); 
+            }
+            else 
+            {
+                A = I; 
+                S = I.dirder; 
+                while (EliminaSueldo != S.dato && S != F)
+                {
+                    A = S; 
+                    S = S.dirder; 
+                }
+            }
+        }
+        public static void ImprimirI() 
+        {
+            Console.WriteLine("Lista por derecha:");
+            if (Tamaño == 0) 
+            {
+                Console.WriteLine("Lista de sueldos vacia");
+            }
+            T = I; 
+            while (T != null) 
+            {
+                Console.Write($"[{T.dato}]<-->"); 
+                T = T.dirder; 
+            }
+            Console.WriteLine("");
+        }
+
+        public static void ImprimirD() 
+        {
+            Console.WriteLine("Lista por izquierda:");
+            if (Tamaño == 0) 
+            {
+                Console.WriteLine("Lista de sueldos vacia");
+            }
+            T = F; 
+            while (T != null) 
+            {
+                Console.Write($"[{T.dato}]<-->"); 
+                T = T.dirizq; 
+            }
+            Console.WriteLine("");
+        }
+        static void Main(string[] args)
+        {
+
+            Console.Title = "Manejo de Listas enlazadas Dobles";
+            F = null; I = null;
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("\tMenu"); 
+                Console.WriteLine("1.-Insertar sueldo\n2.-Eliminar Sueldo\n3.-Imprimir por Izquierda\n" +
+                "4.-Imprimir por Derecha\n5.-Salir");
+                Opcion = Console.ReadLine(); 
+                Console.Clear();
+                switch (Opcion) 
+                {
+                    case "1": 
+                        do
+                        {
+                            Console.WriteLine("Ingresar sueldo"); 
+                            Sueldo = int.Parse(Console.ReadLine()); 
+                            Insertar(); 
+                            Console.WriteLine("Sueldos:"); 
+                            ImprimirI();
+                            Console.WriteLine("\r\nDesea ingresar otro sueldo? [y/n]"); 
+                            eleccion = Console.ReadLine(); 
+                            Console.Clear(); 
+                        } while (eleccion.Equals("1"));
+                        break;
+                    case "2": 
+                        do
+                        {
+                            Console.WriteLine("\aEliminar un sueldo"); 
+                            ImprimirI(); 
+                            Console.WriteLine("");
+                            Console.WriteLine("Ingrese el sueldo que desea eliminar"); 
+                            EliminaSueldo = int.Parse(Console.ReadLine());
+                            Eliminar(); 
+                            Console.Clear(); 
+                            ImprimirI(); 
+                            Console.ReadKey();
+                            Console.WriteLine("\r\nDesea eliminar otro sueldo? [y/n]"); 
+                            eleccion = Console.ReadLine();
+                        } while (eleccion.Equals("1"));
+                        break;
+                    case "3": 
+                        Console.WriteLine("Sueldos ingresados por derecha:"); 
+                        ImprimirD(); 
+                        Console.ReadKey();
+                        Console.Clear();
+                        break;
+                    case "4":
+                        Console.WriteLine("Sueldos ingresados por Izquierda:"); 
+                        ImprimirI(); 
+                        Console.ReadKey();
+                        Console.Clear();
+                        break;
+                    case "5":
+                        Console.Clear();
+                        Console.WriteLine("Hasta Luego");
+                        Console.ReadKey();
+                        Opcion = null;
+                        break;
+                }
+            } while (Opcion !="0"); 
+        }
+    }
+}
