@@ -1,0 +1,312 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Sueldos
+{
+    class NodoS
+    {
+        public NodoS NodoIzquierdo;
+        public string Informacion;
+        public NodoS NodoDerecho;
+
+        public NodoS()/*Constructor*/
+        {
+            this.NodoIzquierdo = null;
+            this.Informacion = " ";
+            this.NodoDerecho = null;
+        }
+    }
+    class Program
+    {
+        private const string V = " ";/*Declarando variable que no puede modificarse ya que es una Constante*/
+
+        static void Main(string[] args)
+        {
+            Console.Title = V;
+            int Opcion = 0;
+            NodoS Raiz = null;
+            string Dato;
+            do
+            {
+                Opcion = Menu();
+                switch (Opcion)
+                {
+                    case 1:
+                        Console.Write("Nombre del nuevo Nodo: ");
+                        Dato = Console.ReadLine();
+                        if (Raiz == null)
+                        {
+                            NodoS NuevoNodo = new NodoS
+                            {
+                                Informacion = Dato
+                            };
+                            Raiz = NuevoNodo;
+                        }
+                        else
+                        {
+                            Insertar(Raiz, Dato);
+                        }
+                        Console.Clear();
+                        break;
+                    case 2:/*Recorrido en Pre-orden del Arbol*/
+                        Console.WriteLine("Mostrando Recorrido de Orden previo");
+                        RecorridoPreorden(Raiz);
+                        Console.WriteLine("Fin del Recorrido,...");
+                        Console.ReadLine();
+                        Console.Clear();
+                        break;
+                    case 3:/*Recorrido en Post-orden del Arbol*/
+                        Console.WriteLine("Mostrando Recorrido de Orden Posterior");
+                        RecorridoPostorden(Raiz);
+                        Console.WriteLine("Fin del Recorrido,...");
+                        Console.ReadLine();
+                        Console.Clear();
+                        break;
+                    case 4:
+                        Console.WriteLine("Mostrando Recorrido de Orden Simetrico");
+                        RecorridoInorden(Raiz);
+                        Console.WriteLine("Fin del Recorrido,...");
+                        Console.ReadLine();
+                        Console.Clear();
+                        break;
+                    case 5:
+                        Console.WriteLine("Buscando un nombre en especifico");
+                        Console.Write("\nTeclee el nombre a Buscar: ");
+                        Dato = Console.ReadLine();
+                        if (Raiz != null)
+                        {
+                            BuscarNodo(Raiz, Dato);
+                        }
+                        else
+                        {
+                            Console.WriteLine("ERROR, Arbol vacio...");
+                        }
+                        Console.Clear();
+                        break;
+                    case 6:
+                        Console.WriteLine("Teclee el nombre a Eliminar: ");
+                        Dato = Console.ReadLine();
+                        if (Raiz != null)
+                        {
+                            EliminarNodo(ref Raiz, Dato);
+                        }
+                        else
+                        {
+                            Console.WriteLine("ERROR, Arbol vacio...");
+                        }
+                        Console.Clear();
+                        break;
+                    case 7:
+                        Finalizar();
+                        break;
+                }
+            } while (Opcion != 7);
+        }
+        static int Menu()
+        {
+            int Resultado = 0;
+            do
+            {
+                Console.WriteLine("MENU DE ARBOLES");
+                Console.WriteLine("\n1.-Registrar un nuevo Nodo");
+                Console.WriteLine("2.-Recorrido en Pre-Orden");
+                Console.WriteLine("3.-Recorrido en Post-Orden");
+                Console.WriteLine("4.-Recorrido en In-orden");
+                Console.WriteLine("5.-Buscar un Nodo");
+                Console.WriteLine("6.-Eliminar un Nodo");
+                Console.WriteLine("7.-Finalizar Programa");
+                Console.Write("\nTeclee la opción deseada: ");
+                Resultado = int.Parse(Console.ReadLine());
+                if (Resultado < 1 || Resultado > 7)
+                {
+                    Console.WriteLine("ERROR, Opcion Invalida...");
+                    Console.ReadLine();
+                }
+                Console.Clear();
+            } while (Resultado < 1 || Resultado > 7);
+            return Resultado;
+        }
+        /*Insertar arbol Binario*/
+        static void Insertar(NodoS raiz, String Dato)
+        {
+            if (string.Compare(Dato, raiz.Informacion) < 0)
+            {
+                if (raiz.NodoIzquierdo == null)
+                {
+                    NodoS NuevoNodo = new NodoS
+                    {
+                        Informacion = Dato
+                    };
+                    raiz.NodoIzquierdo = NuevoNodo;
+                }
+                else
+                {
+                    Insertar(raiz.NodoIzquierdo, Dato);/*Llamada recursiva*/
+                }
+            }
+            else/*Buscar de lado derecho*/
+            {
+                if (string.Compare(Dato, raiz.Informacion) > 0)
+                {
+                    if (raiz.NodoDerecho == null)
+                    {
+                        NodoS NuevoNodo = new NodoS
+                        {
+                            Informacion = Dato
+                        };
+                        raiz.NodoDerecho = NuevoNodo;
+                    }
+                    else
+                    {
+                        Insertar(raiz.NodoDerecho, Dato);/*Llamada recursiva por el lado derecho*/
+                    }
+                }
+                else
+                {
+                    /*El Nodo Existe en el arbol*/
+                    Console.WriteLine("Nodo Existente, Imposible Insertar...");
+                    Console.ReadLine();
+                }
+            }
+        }
+        static void RecorridoPreorden(NodoS raiz)/*Metodo de recorrido en Pre-Orden*/
+        {
+            if (raiz != null)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write("{0},", raiz.Informacion);
+                Console.ForegroundColor = ConsoleColor.White;
+                RecorridoPreorden(raiz.NodoIzquierdo);
+                RecorridoPreorden(raiz.NodoDerecho);
+            }
+        }
+        static void RecorridoInorden(NodoS raiz)/*Metodo de recorrido en In-Orden*/
+        {
+            if (raiz != null)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write("{0},", raiz.Informacion);
+                Console.ForegroundColor = ConsoleColor.White;
+                RecorridoInorden(raiz.NodoIzquierdo);
+                RecorridoInorden(raiz.NodoDerecho);
+            }
+        }
+        static void RecorridoPostorden(NodoS raiz)/*Metodo de recorrido en Pre-Orden*/
+        {
+            if (raiz != null)
+            {
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.Write("{0},", raiz.Informacion);
+                Console.ForegroundColor = ConsoleColor.White;
+                RecorridoPostorden(raiz.NodoIzquierdo);
+                RecorridoPostorden(raiz.NodoDerecho);
+            }
+        }
+        static void BuscarNodo(NodoS raiz, string Dato)
+        {
+            if (string.Compare(Dato, raiz.Informacion) < 0)
+            {/*Buscar por el sub-arbol izquierdo*/
+                if (raiz.NodoIzquierdo == null)
+                {
+                    Console.WriteLine("ERROR, No se encuentra el Nodo...");
+                    Console.ReadLine();
+                }
+                else
+                {
+                    BuscarNodo(raiz.NodoIzquierdo, Dato);
+                }
+            }
+            else
+            {
+                if (string.Compare(Dato, raiz.Informacion) > 0)
+                {/*Buscar por el sub-arbol derecho*/
+                    if (raiz.NodoDerecho == null)
+                    {
+                        Console.WriteLine("ERROR, No se encuentra el Nodo...");
+                        Console.ReadLine();
+                    }
+                    else
+                    {
+                        BuscarNodo(raiz.NodoDerecho, Dato);
+                    }
+                }
+                else
+                {/*El nodo se encontro*/
+                    Console.WriteLine($"Nodo Localizado en el Arbol...{Dato}");
+                    Console.ReadLine();
+                }
+            }
+        }
+        /*Metodo Eliminar*/
+        static void EliminarNodo(ref NodoS raiz, string Dato)
+        {
+            if (raiz != null)
+            {
+                if (string.Compare(Dato, raiz.Informacion) < 0)
+                {
+                    EliminarNodo(ref raiz.NodoIzquierdo, Dato);
+                }
+                else
+                {
+                    if (string.Compare(Dato, raiz.Informacion) < 0)
+                    {
+                        EliminarNodo(ref raiz.NodoDerecho, Dato);
+                    }
+                    else
+                    {/*lo encuentra*/
+                        NodoS NodoEliminar = raiz;
+                        if (NodoEliminar.NodoDerecho == null)
+                        {
+                            raiz = NodoEliminar.NodoIzquierdo;
+                        }
+                        else
+                        {
+                            if (NodoEliminar.NodoIzquierdo == null)
+                            {
+                                raiz = NodoEliminar.NodoDerecho;
+                            }
+                            else
+                            {
+                                NodoS AuxiliarNodo = null;
+                                NodoS Auxiliar = raiz.NodoIzquierdo;
+                                bool Bandera = false;
+                                while (Auxiliar.NodoDerecho != null)
+                                {
+                                    AuxiliarNodo = Auxiliar;
+                                    Auxiliar = Auxiliar.NodoDerecho;
+                                    Bandera = true;
+                                }
+                                raiz.Informacion = Auxiliar.Informacion;
+                                NodoEliminar = Auxiliar;
+                                if (Bandera == true)
+                                {
+                                    AuxiliarNodo.NodoDerecho = Auxiliar.NodoIzquierdo;
+                                }
+                                else
+                                {
+                                    raiz.NodoIzquierdo = Auxiliar.NodoIzquierdo;
+                                }
+                            }
+                        }
+                        Console.WriteLine("Elemento Eliminado...");
+                        Console.ReadLine();
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("ERROR, El Nodo no se encuentra en el arbol...");
+                Console.ReadLine();
+            }
+        }
+        /*Metodo de Finalizacion*/
+        static void Finalizar()
+        {
+            Console.WriteLine("Fin del Programa, press any key to continue...");
+            Console.ReadLine();
+        }
+    }
+}
